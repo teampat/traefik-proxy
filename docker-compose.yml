@@ -27,8 +27,9 @@ services:
       traefik.http.routers.dashboard.entrypoints: websecure
       traefik.http.routers.dashboard.tls: true
       traefik.http.routers.dashboard.service: api@internal
-      traefik.http.routers.dashboard.middlewares: dashboard-auth
-      traefik.http.middlewares.dashboard-auth.basicauth.users: test:$$2y$$12$$ci.4U63YX83CwkyUrjqxAucnmi2xXOIlEF6T/KdP9824f1Rf1iyNG" # credentials test:test
+      # enable basic auth (hight cpu usage)
+      # traefik.http.routers.dashboard.middlewares: dashboard-auth
+      # traefik.http.middlewares.dashboard-auth.basicauth.users: test:$$2y$$12$$ci.4U63YX83CwkyUrjqxAucnmi2xXOIlEF6T/KdP9824f1Rf1iyNG" # credentials test:test
 networks:
   traefik-public:
     external: true
