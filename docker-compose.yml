@@ -15,21 +15,25 @@ services:
     ports:
       - '80:80'
       - '443:443'
-      - '8080:8080'
     volumes:
       - ./config/traefik.yaml:/etc/traefik/traefik.yaml
       - ./certs:/certs
       - ./letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock
+  proxy-dashboard:
+    image: nginx:stable-alpine
+    networks:
+      - traefik-public
+    volumes:
+      - ./config/nginx/proxy.conf:/etc/nginx/conf.d/default.conf
+      - ./config/nginx/.htpasswd:/etc/nginx/.htpasswd
     labels:
       traefik.enable: true
-      traefik.http.routers.dashboard.rule: Host(`traefik-dashboard.rundemoapp.com`)
-      traefik.http.routers.dashboard.entrypoints: websecure
-      traefik.http.routers.dashboard.tls: true
-      traefik.http.routers.dashboard.service: api@internal
-      # enable basic auth (hight cpu usage)
-      # traefik.http.routers.dashboard.middlewares: dashboard-auth
-      # traefik.http.middlewares.dashboard-auth.basicauth.users: test:$$2y$$12$$ci.4U63YX83CwkyUrjqxAucnmi2xXOIlEF6T/KdP9824f1Rf1iyNG" # credentials test:test
+      traefik.http.routers.proxy-dashboard.rule: Host(`traefik-dashboard.rundemoapp.com`)
+      traefik.http.routers.proxy-dashboard.entrypoints: websecure
+      traefik.http.routers.proxy-dashboard.tls: true
+      traefik.http.services.proxy-dashboard.loadbalancer.server.port: 80
+
 networks:
   traefik-public:
     external: true

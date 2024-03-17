@@ -5,3 +5,4 @@ acme.json
 *.crt 
 *.pem 
 *.key
+.htpasswd
