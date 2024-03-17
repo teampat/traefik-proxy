@@ -1,5 +1,5 @@
-!certs/.gitkeep
 certs/*
+!certs/.gitkeep
 acme.json
 .DS_Store
 *.crt 
