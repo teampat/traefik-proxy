@@ -13,8 +13,8 @@ log:
 accessLog: {}
 
 # enable prometheus metrics
-metrics:
-  prometheus: {}
+# metrics:
+#   prometheus: {}
 
 # enable dashboard on 8080 with NO AUTH
 api:
