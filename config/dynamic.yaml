@@ -4,37 +4,16 @@
 http:
   # Routers for Traefik Dashboard
   routers:
-    # Root redirect to dashboard via HTTP
-    root-redirect-http:
-      rule: "Path(`/`)"
-      entryPoints:
-        - "web"
-      middlewares:
-        - "redirect-to-dashboard"
-      service: "api@internal"
-    
-    # Dashboard route via HTTP
-    dashboard-http:
+    # Redirect dashboard HTTP to HTTPS
+    dashboard-http-redirect:
       rule: "(PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
       entryPoints:
         - "web"
       middlewares:
-        - "dashboard-redirect"
-        - "dashboard-whitelist"
-        - "cloudflare-realip"
+        - "dashboard-https-redirect"
       service: "api@internal"
     
-    # Root redirect to dashboard via HTTPS
-    root-redirect-https:
-      rule: "Path(`/`)"
-      entryPoints:
-        - "websecure"
-      middlewares:
-        - "redirect-to-dashboard"
-      service: "api@internal"
-      tls: {}
-    
-    # Dashboard route via HTTPS
+    # Dashboard route via HTTPS only
     dashboard-https:
       rule: "(PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
       entryPoints:
@@ -92,7 +71,7 @@ http:
       redirectRegex:
         regex: "^(https?)://([^/]+)/dashboard$"
         replacement: "${1}://${2}/dashboard/"
-
+    
 tls:
   certificates:
     - certFile: /certs/cloudflare_rundemoapp.crt
