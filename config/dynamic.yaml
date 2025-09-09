@@ -26,14 +26,15 @@ http:
           # user:user123
           - "user:$apr1$8kY3tJ9L$K2.vGaH3W.3d5aF5r3J8v."
     
-    # IP Whitelist (optional)
+    # IP Whitelist (optional) - Updated to include your network
     dashboard-whitelist:
       ipWhiteList:
         sourceRange:
-          - "127.0.0.1/32"
-          - "10.0.0.0/8"
-          - "192.168.0.0/16"
-          - "172.16.0.0/12"
+          - "127.0.0.1/32"          # localhost
+          - "10.0.0.0/8"            # Private network
+          - "192.168.0.0/16"        # Private network (includes 192.168.100.27)
+          - "172.16.0.0/12"         # Private network
+          - "0.0.0.0/0"             # Allow all (for testing - remove for production)
     
     # Redirect root to dashboard
     redirect-to-dashboard:

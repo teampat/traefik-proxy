@@ -24,18 +24,31 @@ services:
       # Enable Traefik to route to itself for dashboard
       traefik.enable: true
       
+      # Root redirect to dashboard via HTTP
+      traefik.http.routers.root-redirect-http.rule: Path(`/`)
+      traefik.http.routers.root-redirect-http.entrypoints: web
+      traefik.http.routers.root-redirect-http.middlewares: redirect-to-dashboard
+      traefik.http.routers.root-redirect-http.service: api@internal
+      
       # Dashboard route via HTTP (port 80) - path based routing
       traefik.http.routers.dashboard-http.rule: (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       traefik.http.routers.dashboard-http.entrypoints: web
       traefik.http.routers.dashboard-http.service: api@internal
-      traefik.http.routers.dashboard-http.middlewares: dashboard-redirect,dashboard-auth,dashboard-whitelist,cloudflare-realip
+      traefik.http.routers.dashboard-http.middlewares: dashboard-redirect,dashboard-auth,cloudflare-realip
+      
+      # Root redirect to dashboard via HTTPS
+      traefik.http.routers.root-redirect-https.rule: Path(`/`)
+      traefik.http.routers.root-redirect-https.entrypoints: websecure
+      traefik.http.routers.root-redirect-https.middlewares: redirect-to-dashboard
+      traefik.http.routers.root-redirect-https.service: api@internal
+      traefik.http.routers.root-redirect-https.tls: true
       
       # Dashboard route via HTTPS (port 443) - path based routing  
       traefik.http.routers.dashboard-https.rule: (PathPrefix(`/dashboard`) || PathPrefix(`/api`))
       traefik.http.routers.dashboard-https.entrypoints: websecure
       traefik.http.routers.dashboard-https.tls: true
       traefik.http.routers.dashboard-https.service: api@internal
-      traefik.http.routers.dashboard-https.middlewares: dashboard-redirect,dashboard-auth,dashboard-whitelist,cloudflare-realip
+      traefik.http.routers.dashboard-https.middlewares: dashboard-redirect,dashboard-auth,cloudflare-realip
 
 networks:
   traefik-proxy:
