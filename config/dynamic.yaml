@@ -4,15 +4,6 @@
 http:
   # Routers for Traefik Dashboard
   routers:
-    # Redirect dashboard HTTP to HTTPS
-    dashboard-http-redirect:
-      rule: "(PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
-      entryPoints:
-        - "web"
-      middlewares:
-        - "dashboard-https-redirect"
-      service: "api@internal"
-    
     # Dashboard route via HTTPS only
     dashboard-https:
       rule: "(PathPrefix(`/dashboard`) || PathPrefix(`/api`))"
