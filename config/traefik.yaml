@@ -16,10 +16,10 @@ accessLog: {}
 # metrics:
 #   prometheus: {}
 
-# enable dashboard (secure mode for external access)
+# enable dashboard (insecure mode for testing)
 api:
   dashboard: true
-  # insecure: true  # Only enable for internal/development access
+  insecure: true  # Enable for testing - dashboard available on port 8080
 
 # enable ping so the `traefik healthcheck` works
 ping: {}
@@ -39,12 +39,12 @@ entryPoints:
   web:
     address: :80
     # comment out these lins if you don't want to redirect everything
-    http:
-      redirections:
-        entryPoint:
-          to: websecure
-          scheme: https
-          permanent: true
+    # http:
+    #   redirections:
+    #     entryPoint:
+    #       to: websecure
+    #       scheme: https
+    #       permanent: true
   websecure:
     address: :443
     forwardedHeaders:
