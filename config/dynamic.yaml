@@ -40,6 +40,12 @@ http:
       redirectRegex:
         regex: "^(https?)://([^/]+)/?$"
         replacement: "${1}://${2}/dashboard/"
+    
+    # Add trailing slash to dashboard path
+    dashboard-redirect:
+      redirectRegex:
+        regex: "^(https?)://([^/]+)/dashboard$"
+        replacement: "${1}://${2}/dashboard/"
 
 tls:
   certificates:
