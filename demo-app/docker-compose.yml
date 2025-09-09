@@ -22,34 +22,6 @@ services:
       traefik.http.routers.app2.entrypoints: websecure
       traefik.http.routers.app2.tls: true
       traefik.http.services.app2.loadbalancer.server.port: 80
-  app3:
-    image: traefik/whoami:latest
-    restart: always
-    networks:
-      - traefik-proxy
-    labels:
-      traefik.enable: true
-      traefik.http.routers.app3.rule: Host(`traefik-demo-app3.rundemoapp.com`)
-      traefik.http.routers.app3.entrypoints: websecure
-      traefik.http.routers.app3.tls: true
-      traefik.http.services.app3.loadbalancer.server.port: 80
-      traefik.http.middlewares.app3-cors.headers.accesscontrolallowmethods: GET,OPTIONS,PUT
-      traefik.http.middlewares.app3-cors.headers.accesscontrolallowheaders: '*'
-      traefik.http.middlewares.app3-cors.headers.accesscontrolalloworiginlist: https://foo.bar.org,https://example.org
-      traefik.http.middlewares.app3-cors.headers.accesscontrolmaxage: 100
-      traefik.http.middlewares.app3-cors.headers.addvaryheader: true
-      traefik.http.routers.app3.middlewares: app3-cors
-  app4:
-    image: traefik/whoami:latest
-    restart: always
-    networks:
-      - traefik-proxy
-    labels:
-      traefik.enable: true
-      traefik.http.routers.app4.rule: Host(`traefik-demo-app4.rundemoapp.com`)
-      traefik.http.routers.app4.entrypoints: websecure
-      traefik.http.routers.app4.tls.certresolver: letsencryptresolver
-      traefik.http.services.app4.loadbalancer.server.port: 80
 
 networks:
   traefik-proxy:
