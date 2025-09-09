@@ -1,5 +1,46 @@
 ## DYNAMIC CONFIG
 
+# Middleware for Cloudflare real IP headers
+http:
+  middlewares:
+    cloudflare-realip:
+      headers:
+        # Pass through original client IP headers from Cloudflare
+        customRequestHeaders:
+          # Cloudflare sends real IP in CF-Connecting-IP header
+          X-Real-IP: "CF-Connecting-IP"
+          # Keep original Cloudflare headers
+          X-CF-Connecting-IP: "CF-Connecting-IP"
+          X-CF-IPCountry: "CF-IPCountry"
+        # Preserve host headers for proper routing
+        hostsProxyHeaders:
+          - "X-Forwarded-Host"
+          - "X-Forwarded-Proto"
+    
+    # Basic Auth for Traefik Dashboard
+    dashboard-auth:
+      basicAuth:
+        users:
+          # admin:admin123 (change password as needed)
+          - "admin:$apr1$iHxHQb/t$TCgjILm5WkEu8YSPNEUAV0"
+          # user:user123
+          - "user:$apr1$8kY3tJ9L$K2.vGaH3W.3d5aF5r3J8v."
+    
+    # IP Whitelist (optional)
+    dashboard-whitelist:
+      ipWhiteList:
+        sourceRange:
+          - "127.0.0.1/32"
+          - "10.0.0.0/8"
+          - "192.168.0.0/16"
+          - "172.16.0.0/12"
+    
+    # Redirect root to dashboard
+    redirect-to-dashboard:
+      redirectRegex:
+        regex: "^(https?)://([^/]+)/?$"
+        replacement: "${1}://${2}/dashboard/"
+
 tls:
   certificates:
     - certFile: /certs/cloudflare_rundemoapp.crt
